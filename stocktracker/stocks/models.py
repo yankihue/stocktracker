@@ -6,10 +6,8 @@ from stocks.managers import StockManager
 class Stock(models.Model):
     ticker = models.CharField(max_length=10)
     price = models.FloatField()
-    open = models.FloatField()
-    close = models.FloatField()
-    volume = models.IntegerField()
-    date = models.DateField()
+
+    datetime = models.DateTimeField()
 
     objects = StockManager()
 
