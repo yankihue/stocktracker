@@ -26,4 +26,6 @@ jobs:
           pip install -r requirements.txt
       - name: Run Tests
         run: |
+          cd stocktracker
+          python manage.py migrate
           python manage.py test
