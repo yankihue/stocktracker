@@ -35,8 +35,8 @@ def debug_task(self):
 # in the Django admin to manage all
 # Periodic Tasks like below
 app.conf.beat_schedule = {
-    "multiply-every-5-seconds": {
-        "task": "stocks.tasks.get_stock_data",
+    "populate_stock_price": {
+        "task": "stocks.tasks.populate_stock_price",
         "schedule": 5.0,
     },
 }
