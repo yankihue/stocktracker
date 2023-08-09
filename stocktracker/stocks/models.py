@@ -6,7 +6,7 @@ from stocks.managers import StockManager
 class Stock(models.Model):
     """A model to represent a stock publicy traded on an exchange."""
 
-    ticker = models.CharField(max_length=3)  # ticker symbol for a given stock
+    ticker = models.CharField(max_length=5)  # ticker symbol for a given stock
     price = models.FloatField()  # to represent current exchange price
 
     datetime = models.DateTimeField()  # timestamp for when value was last updated
