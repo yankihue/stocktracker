@@ -1,7 +1,7 @@
 import requests
 from django.contrib.auth.models import Group, User
 from rest_framework import generics, permissions, viewsets
-from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from stocks.models import Stock
@@ -38,33 +38,16 @@ class GroupViewSet(viewsets.ModelViewSet):
 #     permission_classes = [permissions.IsAuthenticated]
 
 
-class StockList(ListModelMixin, generics.GenericAPIView):
+class StockList(ListModelMixin, CreateModelMixin, generics.GenericAPIView):
     """
     List all snippets, or create a new snippet.
     """
 
     queryset = Stock.objects.all()
-    serializer_class = StockSerializer(queryset, many=True)
+    serializer_class = StockSerializer
 
-    def get(self, request, format=None):
-        # return Response(serializer.data)
-        currency1 = "BTC"
-        currency2 = "USD"
-        url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency={}&apikey=WX0W0TEMMGW2CVT9".format(
-            currency1, currency2
-        )
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-        observation = requests.get(url=url).json()
-        ticker = observation["Realtime Currency Exchange Rate"]["1. From_Currency Code"]
-        tickerName = observation["Realtime Currency Exchange Rate"][
-            "2. From_Currency Name"
-        ]
-        exchangeRate = observation["Realtime Currency Exchange Rate"][
-            "5. Exchange Rate"
-        ]
-        if Stock.objects.filter(ticker=ticker).exists():
-            stock = Stock.objects.get(ticker=ticker)
-            stock.price = exchangeRate
-            stock.save()
-        print(tickerName)
-        return Response(observation)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)

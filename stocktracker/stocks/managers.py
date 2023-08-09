@@ -22,15 +22,12 @@ class StockManager(models.Manager):
         tickerName = observation["Realtime Currency Exchange Rate"][
             "1. From_Currency Code"
         ]
-        print(tickerName)
         # x = Stock.objects.filter(ticker=tickerName)
 
-        # stock = self.update_or_create(
-        #     ticker=observation.F,
-        #     open=observation.open,
-        #     close=observation.close,
-        #     volume=observation.volume,
-        #     date=timezone.now(),
-        # )
+        stock = Stock.objects.get(ticker=tickerName)
+        stock.price = float(
+            observation["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
+        )
+        stock.save()
 
-        # return stock
+        return stock

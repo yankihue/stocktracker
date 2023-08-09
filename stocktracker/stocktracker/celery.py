@@ -1,9 +1,7 @@
 # path/to/your/proj/src/cfehome/celery.py
 import os
 
-from celery import Celery, shared_task
-from celery.schedules import crontab
-from decouple import config
+from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
 # this is also used in manage.py
@@ -38,7 +36,7 @@ def debug_task(self):
 # Periodic Tasks like below
 app.conf.beat_schedule = {
     "multiply-every-5-seconds": {
-        "task": "get_stock_data",
+        "task": "stocks.tasks.get_stock_data",
         "schedule": 5.0,
     },
 }
