@@ -2,7 +2,12 @@ import datetime
 import time
 
 import requests
+from celery.utils.log import get_task_logger
 from django.db import models
+
+logger = get_task_logger(
+    "populate_stock_price"
+)  # to log to terminal when we hit API rate limit
 
 
 class StockManager(models.Manager):
@@ -14,7 +19,7 @@ class StockManager(models.Manager):
             stock.ticker
         )  # get name (ticker) for current Stock object to be updated
         base_currency = "USD"  # always compare against USD price
-        url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency={}&apikey=WX0W0TEMMGW2CVT9".format(
+        url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency={}&apikey=P89NKIW9Y3YEO73Y".format(
             currency, base_currency
         )
 
@@ -24,7 +29,9 @@ class StockManager(models.Manager):
                 "Realtime Currency Exchange Rate"
             ]  # check if we hit API rate limit
         except KeyError:  # means we hit API limit
-            return None
+            return logger.info(
+                "ERROR: API rate limit reached. Task will be re-attempted later."
+            )
 
         rate = observation["Realtime Currency Exchange Rate"][
             "5. Exchange Rate"
