@@ -37,6 +37,6 @@ def debug_task(self):
 app.conf.beat_schedule = {
     "populate_stock_price": {
         "task": "stocks.tasks.populate_stock_price",
-        "schedule": 5.0,
+        "schedule": 13.0,  # free tier rate limit is 5 requests per minute, this barely gets us over
     },
 }

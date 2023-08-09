@@ -1,3 +1,5 @@
+import time
+
 import requests
 from django.db import models
 
@@ -14,11 +16,16 @@ class StockManager(models.Manager):
         )
 
         observation = requests.get(url=url).json()
-        observation = observation["Realtime Currency Exchange Rate"]
-        tickerName = observation["1. From_Currency Code"]
+        try:
+            observation["Realtime Currency Exchange Rate"]
+        except KeyError:  # means we hit API limit
+            return None
+        tickerName = observation["Realtime Currency Exchange Rate"][
+            "1. From_Currency Code"
+        ]
 
         stock = self.get(ticker=tickerName)
-        rate = observation["5. Exchange Rate"]
+        rate = observation["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
         stock.price = float(rate)
         stock.save()
 
