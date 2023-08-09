@@ -55,8 +55,16 @@ class StockList(ListModelMixin, generics.GenericAPIView):
         )
 
         observation = requests.get(url=url).json()
+        ticker = observation["Realtime Currency Exchange Rate"]["1. From_Currency Code"]
         tickerName = observation["Realtime Currency Exchange Rate"][
-            "1. From_Currency Code"
+            "2. From_Currency Name"
         ]
+        exchangeRate = observation["Realtime Currency Exchange Rate"][
+            "5. Exchange Rate"
+        ]
+        if Stock.objects.filter(ticker=ticker).exists():
+            stock = Stock.objects.get(ticker=ticker)
+            stock.price = exchangeRate
+            stock.save()
         print(tickerName)
         return Response(observation)
