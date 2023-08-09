@@ -13,6 +13,7 @@ markdown = "^3.4.4"
 django-filter = "^23.2"
 black = "^23.7.0"
 flake8 = "^6.1.0"
+requests = "^2.31.0"
 
 
 [build-system]

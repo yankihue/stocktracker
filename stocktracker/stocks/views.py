@@ -1,6 +1,11 @@
+import requests
 from django.contrib.auth.models import Group, User
-from rest_framework import permissions, viewsets
-from stocks.serializers import GroupSerializer, UserSerializer
+from rest_framework import generics, permissions, viewsets
+from rest_framework.mixins import ListModelMixin
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from stocks.models import Stock
+from stocks.serializers import GroupSerializer, StockSerializer, UserSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -21,3 +26,37 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+# class StocksViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows stocks to be viewed.
+#     """
+
+#     queryset = Stock.objects.all()
+#     serializer_class = StockSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+
+
+class StockList(ListModelMixin, generics.GenericAPIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+
+    queryset = Stock.objects.all()
+    serializer_class = StockSerializer(queryset, many=True)
+
+    def get(self, request, format=None):
+        # return Response(serializer.data)
+        currency1 = "BTC"
+        currency2 = "USD"
+        url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency={}&apikey=WX0W0TEMMGW2CVT9".format(
+            currency1, currency2
+        )
+
+        observation = requests.get(url=url).json()
+        tickerName = observation["Realtime Currency Exchange Rate"][
+            "1. From_Currency Code"
+        ]
+        print(tickerName)
+        return Response(observation)
