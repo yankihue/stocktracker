@@ -29,10 +29,9 @@ class StockManager(models.Manager):
         rate = observation["Realtime Currency Exchange Rate"][
             "5. Exchange Rate"
         ]  # get current exchange rate
-        timestamp = datetime.datetime.now()
         stock.price = float(rate)  # turn string response into float
         stock.datetime = (
-            timestamp  # update the timestamp for when the price was last recorded
+            datetime.datetime.now()  # update the timestamp for when the price was last recorded
         )
         stock.save()
 
