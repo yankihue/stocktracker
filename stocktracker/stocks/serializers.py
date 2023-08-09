@@ -1,5 +1,6 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
+from stocks.models import Stock
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,3 +13,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ["url", "name"]
+
+
+class StockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stock
+        fields = ["ticker", "open", "close", "volume", "date"]
