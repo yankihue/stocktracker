@@ -1,13 +1,11 @@
-import requests
 from django.contrib.auth.models import Group, User
 from rest_framework import generics, permissions, viewsets
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from stocks.models import Stock
 from stocks.serializers import GroupSerializer, StockSerializer, UserSerializer
 
 
+# User and Group views for simple auth purposes
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -28,19 +26,9 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-# class StocksViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows stocks to be viewed.
-#     """
-
-#     queryset = Stock.objects.all()
-#     serializer_class = StockSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-
 class StockList(ListModelMixin, CreateModelMixin, generics.GenericAPIView):
     """
-    List all snippets, or create a new snippet.
+    List all stocks, or create a new one to keep track of.
     """
 
     queryset = Stock.objects.all()
