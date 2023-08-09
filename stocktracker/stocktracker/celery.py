@@ -2,6 +2,7 @@
 import os
 
 from celery import Celery, shared_task
+from celery.schedules import crontab
 from decouple import config
 
 # set the default Django settings module for the 'celery' program.
@@ -29,3 +30,15 @@ app.autodiscover_tasks()
 @app.task(bind=True, ignore_result=True)
 def debug_task(self):
     print(f"Request: {self.request!r}")
+
+
+# Below is for illustration purposes. We
+# configured so we can adjust scheduling
+# in the Django admin to manage all
+# Periodic Tasks like below
+app.conf.beat_schedule = {
+    "multiply-every-5-seconds": {
+        "task": "get_stock_data",
+        "schedule": 5.0,
+    },
+}
