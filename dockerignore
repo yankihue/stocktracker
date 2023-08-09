@@ -1,0 +1,9 @@
+.flake8
+.gitignore
+.pre-pre_commit-config.yaml
+.coverage
+.vscode/
+.env
+.env.example
+docker-compose*
+README.srt
