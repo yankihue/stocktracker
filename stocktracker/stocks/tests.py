@@ -37,3 +37,11 @@ class StockTest(TestCase):
         """Test if the populate method is called when the periodic populate task beat runs."""
         populate_stock_price()
         stock_populate.assert_called()
+
+    def test_populate_logic(self):
+        """Test if the populate method actually updates the price of the stock."""
+        sync_stocks()  # create stocks with 0 price
+        stock = Stock.objects.get(ticker="BTC")
+        self.assertTrue(stock.price == 0.0)  # confirm stock is created with price 0
+        Stock.objects.populate(stock)  # populate the stock with price data from API
+        self.assertFalse(stock.price == 0.0)  # should be different now
