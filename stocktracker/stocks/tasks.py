@@ -22,8 +22,8 @@ def sync_stocks():
         "BTC",
         "MATIC",
         "ETH",
-    ]  # normally this would be an API call to get the list of tickers
-    # dynamically loaded in production but results in too many API calls so mock data used here(rate limit)
+    ]  # normally this would be an API call to get the list of tickers dynamically loaded in production
+    # but results in too many API calls so mock data used here(rate limit)
 
     all_stocks = Stock.objects.all()
     for ticker in tickers:
