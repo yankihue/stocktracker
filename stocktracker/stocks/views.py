@@ -7,9 +7,7 @@ from stocks.serializers import StockSerializer
 
 
 class APIRoot(generics.GenericAPIView):
-    """
-    API entry point.
-    """
+    """API entry point."""
 
     permission_classes = [permissions.AllowAny]
 
@@ -22,9 +20,7 @@ class APIRoot(generics.GenericAPIView):
 
 
 class StockList(ListModelMixin, CreateModelMixin, generics.GenericAPIView):
-    """
-    List all stocks, or create a new one to keep track of.
-    """
+    """List all stocks, or create a new one to keep track of."""
 
     queryset = Stock.objects.all()
     serializer_class = StockSerializer

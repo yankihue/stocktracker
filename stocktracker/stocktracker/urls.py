@@ -1,7 +1,5 @@
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework import routers
-from rest_framework.urlpatterns import format_suffix_patterns
 from stocks import views
 
 # Wire up our API using automatic URL routing.

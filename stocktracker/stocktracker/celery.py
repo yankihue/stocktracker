@@ -37,10 +37,10 @@ def debug_task(self):
 app.conf.beat_schedule = {
     "populate_stock_price": {
         "task": "stocks.tasks.populate_stock_price",
-        "schedule": 13.0,  # free tier rate limit is 5 requests per minute, this barely gets us over
+        "schedule": 13.0,  # Free tier rate limit is 5 requests per minute, this barely gets us over
     },
     "sync_stocks": {
         "task": "stocks.tasks.sync_stocks",
-        "schedule": 600,  # check every 10 minutes for changes to the stock list that we can sync
+        "schedule": 600,  # Check every 10 minutes for changes to the stock list that we can sync
     },
 }
