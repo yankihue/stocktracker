@@ -7,7 +7,7 @@ from celery import Celery
 # this is also used in manage.py
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "stocktracker.settings")
 
-app = Celery("cfehome")
+app = Celery("stocktracker")
 
 # Using a string here means the worker don't have to serialize
 # the configuration object to child processes.
@@ -39,8 +39,8 @@ app.conf.beat_schedule = {
         "task": "stocks.tasks.populate_stock_price",
         "schedule": 13.0,  # free tier rate limit is 5 requests per minute, this barely gets us over
     },
-    "initialize_stocks": {
-        "task": "stocks.tasks.initialize_stocks",
+    "sync_stocks": {
+        "task": "stocks.tasks.sync_stocks",
         "schedule": 600,  # check every 10 minutes for changes to the stock list that we can sync
     },
 }

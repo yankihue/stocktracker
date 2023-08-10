@@ -15,7 +15,7 @@ def populate_stock_price():
 
 
 @shared_task()
-def initialize_stocks():
+def sync_stocks():
     """A celery task to initialize(and keep in sync) the database with all unique
     tickers to keep track of."""
     tickers = [
