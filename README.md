@@ -1,5 +1,5 @@
 # Stocktracker
-
+![example workflow](https://github.com/yankihue/stocktracker/actions/workflows/run_tests.yml/badge.svg)
 This is a project based on Django REST Framework and Celery(using Redis as a broker) to keep track of stock prices. Live prices are queried from [Alpha Vantage](https://www.alphavantage.co) periodically using celery beats and the corresponding stock tickers are updated in the database. As the API is rate limited, the number of stocks to keep track of and the frequency of updates has been intentionally lowered. 
 
 ## Development Environment
