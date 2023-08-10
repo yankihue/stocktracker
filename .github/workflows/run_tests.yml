@@ -31,3 +31,5 @@ jobs:
           python manage.py test
 env:
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  STOCK_API_KEY: ${{ secrets.STOCK_API_KEY }}
+  CELERY_BROKER: "redis://redis:6379/0"
