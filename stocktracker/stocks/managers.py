@@ -15,7 +15,7 @@ class StockManager(models.Manager):
     """A manager for the Stock model."""
 
     def populate(self, stock):
-        """Populates the database with Stock objects."""
+        """Populates the database with Stock objects. This method is called by the populate_stock_price task periodically to keep stock prices updated in real time."""
         currency = (
             stock.ticker
         )  # get name (ticker) for current Stock object to be updated

@@ -23,6 +23,9 @@ class StockTest(TestCase):
         )  # add a non-existing stock to test how many the database will have after initialization
 
     def test_initialize(self):
+        self.assertEqual(
+            Stock.objects.all().count(), 1
+        )  # should be only 1 stock created in setup method
         sync_stocks()
 
         self.assertEqual(
@@ -30,7 +33,7 @@ class StockTest(TestCase):
         )  # should be 4 tasks after we add 3 more (as defined in tasks.py)
 
     @patch("stocks.tasks.Stock.objects.populate")  # patch the Stock.populate method
-    def test_populate_is_called(self, stock_populate):
+    def test_populate(self, stock_populate):
         """Test if the populate method is called when the periodic populate task beat runs."""
         populate_stock_price()
         stock_populate.assert_called()
