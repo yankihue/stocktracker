@@ -3,6 +3,7 @@ import time
 
 import requests
 from celery.utils.log import get_task_logger
+from decouple import config
 from django.db import models
 
 logger = get_task_logger(
@@ -19,8 +20,8 @@ class StockManager(models.Manager):
             stock.ticker
         )  # get name (ticker) for current Stock object to be updated
         base_currency = "USD"  # always compare against USD price
-        url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency={}&apikey=P89NKIW9Y3YEO73Y".format(
-            currency, base_currency
+        url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency={}&apikey={}".format(
+            currency, base_currency, config("STOCK_API_KEY")
         )
 
         observation = requests.get(url=url).json()
