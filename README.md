@@ -14,5 +14,8 @@ docker-compose up # or docker-compose up -d
 ```
 should deploy the project on localhost:8010. Head to the `/stocks` directory to observe the stock prices and timestamps being updated. You can check the results of the celery tasks from the `/admin` directory.
 
+## Testing Pipeline
+Tests are implemented using unittest to mock some celery tasks as well as checking the task functions' logic. This means we both test the task itself and its logic, as well as the fact that it's being called by the app as intended. The `run_tests.yml` config runs the project's tests when you push your commits using Github Actions. 
+
 
 This configuration can be used as a starting point to deploy the app to a provider as well.
