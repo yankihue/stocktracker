@@ -6,7 +6,7 @@ setup:
 build:
   docker:
     web: ./compose/local/django/Dockerfile
-    celery: ./compose/local/celery/Dockerfile
+    celery: ./compose/local/django/Dockerfile
 run:
   web: gunicorn stocktracker.wsgi:application --bind 0.0.0.0:$PORT && /start-
   celery: /start-celerybeat
