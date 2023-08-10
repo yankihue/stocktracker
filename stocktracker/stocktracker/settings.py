@@ -143,5 +143,5 @@ CELERY_TIMEZONE = "Australia/Tasmania"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_RESULT_BACKEND = "django-db"
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_REDIS_URL", "redis://localhost:6379")
+CELERY_BROKER_URL = config("CELERY_BROKER")  # local: , "redis://localhost:6379"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
