@@ -1,29 +1,24 @@
-from django.contrib.auth.models import Group, User
-from rest_framework import generics, permissions, viewsets
+from rest_framework import generics, permissions
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from stocks.models import Stock
-from stocks.serializers import GroupSerializer, StockSerializer, UserSerializer
+from stocks.serializers import StockSerializer
 
 
-# User and Group views for simple auth purposes
-class UserViewSet(viewsets.ModelViewSet):
+class APIRoot(generics.GenericAPIView):
     """
-    API endpoint that allows users to be viewed or edited.
-    """
-
-    queryset = User.objects.all().order_by("-date_joined")
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
+    API entry point.
     """
 
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, format=None):
+        return Response(
+            {
+                "stocks": reverse("stocks", request=request, format=format),
+            }
+        )
 
 
 class StockList(ListModelMixin, CreateModelMixin, generics.GenericAPIView):
