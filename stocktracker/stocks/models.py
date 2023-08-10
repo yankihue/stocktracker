@@ -10,7 +10,6 @@ class Stock(models.Model):
 
     ticker = models.CharField(max_length=5)  # Ticker symbol for a given stock
     price = models.FloatField()
-
     datetime = models.DateTimeField()  # Timestamp
     objects = StockManager()  # Custom manager for Stock model
 

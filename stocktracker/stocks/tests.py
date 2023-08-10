@@ -24,7 +24,7 @@ class StockTest(TestCase):
         Stock.objects.create(ticker="AAPL", price=0.0, datetime=timestamp)
 
     def test_initialize(self):
-        """Test if the sync_stocks task creates the correct number of Stocks."""
+        """Test if the sync_stocks task actually creates Stocks."""
         # Initially, there should only be 1 task in the database
         self.assertEqual(Stock.objects.all().count(), 1)
         sync_stocks()

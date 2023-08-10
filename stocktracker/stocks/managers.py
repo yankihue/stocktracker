@@ -7,7 +7,7 @@ from django.db import models
 
 logger = get_task_logger(
     "populate_stock_price"
-)  # to log to terminal when we hit API rate limit
+)  # To log to terminal when we hit API rate limit
 
 
 class StockManager(models.Manager):
