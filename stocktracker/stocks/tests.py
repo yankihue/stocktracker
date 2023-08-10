@@ -1,9 +1,10 @@
 # Create your tests here.
 import datetime
+from unittest.mock import patch
 
 from django.test import TestCase
 from stocks.models import Stock
-from stocks.tasks import initialize_stocks, populate_stock_price
+from stocks.tasks import populate_stock_price, sync_stocks
 
 
 class DefaultTest(TestCase):
@@ -22,19 +23,14 @@ class StockTest(TestCase):
         )  # add a non-existing stock to test how many the database will have after initialization
 
     def test_initialize(self):
-        initialize_stocks.apply()
+        sync_stocks()
 
         self.assertEqual(
             Stock.objects.all().count(), 4
         )  # should be 4 tasks after we add 3 more (as defined in tasks.py)
 
-    def test_populate_task(self):
-        timestamp = datetime.datetime.now()
-        Stock.objects.create(ticker="XMR", price=0.0, datetime=timestamp)
-        populate_stock_price.apply()  # call task synchronously (no queueing) and locally (in the same process)
-        self.assertTrue(
-            Stock.objects.get(ticker="XMR").price != 0.0
-        )  # check if price was updated. should be different than 0
-        self.assertTrue(
-            Stock.objects.get(ticker="XMR").datetime != timestamp
-        )  # check if timestamp was updated. should be different from the initial time
+    @patch("stocks.tasks.Stock.objects.populate")  # patch the Stock.populate method
+    def test_populate_is_called(self, stock_populate):
+        """Test if the populate method is called when the periodic populate task beat runs."""
+        populate_stock_price()
+        stock_populate.assert_called()
